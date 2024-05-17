@@ -1,4 +1,24 @@
 function New-PipelineRun {
+  <#
+.SYNOPSIS
+  Initiates a new run of an Azure DevOps pipeline.
+.DESCRIPTION
+  The New-PipelineRun function starts a new run for a specified Azure DevOps pipeline.
+  It supports various parameters to customize the pipeline run, including the collection URI, project name, pipeline ID, branch, parameters, preview run flag, and stages to skip.
+  This function leverages the Azure DevOps REST API to trigger the pipeline run.
+.EXAMPLE
+  New-PipelineRun -CollectionUri "https://dev.azure.com/organization" -ProjectName "SampleProject" -PipelineId 123 -StagesToSkip @("Stage1", "Stage2")
+
+  This command initiates a new run of the pipeline with ID 123 in the "SampleProject" project.
+.EXAMPLE
+  New-PipelineRun -CollectionUri "https://dev.azure.com/organization" -ProjectName "SampleProject" -PipelineId 123 -Branch "dev" -Parameters @{param1 = "value1"; param2 = "value2"}
+
+  This command initiates a new run of the pipeline with ID 123 in the "SampleProject" project, targeting the "dev" branch.
+.OUTPUTS
+  System.Object
+  Returns the response from the Azure DevOps REST API, which includes details of the pipeline run.
+.NOTES
+#>
   [CmdletBinding(SupportsShouldProcess)]
   param (
     # Collection Uri of the organization
@@ -11,23 +31,23 @@ function New-PipelineRun {
     [string]
     $ProjectName,
 
-    # Project where the pipeline will be created.
+    # Pipeline ID of the pipeline to start the run for
     [Parameter(Mandatory, ValueFromPipelineByPropertyName)]
     [int]$PipelineId,
 
-    # Project where the pipeline will be created.
+    # Parameters to pass to the pipeline
     [Parameter(ValueFromPipelineByPropertyName)]
     [object]$Parameters,
 
-    # Project where the pipeline will be created.
+    # If the run should be a preview run
     [Parameter(ValueFromPipelineByPropertyName)]
     [bool]$PreviewRun,
 
-    # Project where the pipeline will be created.
+    # Stages to skip in the pipeline run
     [Parameter(ValueFromPipelineByPropertyName)]
     [array]$StagesToSkip,
 
-    # Project where the pipeline will be created.
+    # Branch to run the pipeline for
     [Parameter(ValueFromPipelineByPropertyName)]
     [string]$Branch
   )
